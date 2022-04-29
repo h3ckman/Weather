@@ -49,6 +49,7 @@
 		C4D48CFC281B6684006F7F51 /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
 		C4D48CFE281B66C2006F7F51 /* WeatherAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPIClient.swift; sourceTree = "<group>"; };
 		C4D48D00281B695B006F7F51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C4D48D01281B76F6006F7F51 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +80,7 @@
 		C4A21277281B55450057D305 = {
 			isa = PBXGroup;
 			children = (
+				C4D48D01281B76F6006F7F51 /* README.md */,
 				C4A21282281B55450057D305 /* Weather */,
 				C4A21293281B55480057D305 /* WeatherTests */,
 				C4A2129D281B55480057D305 /* WeatherUITests */,
