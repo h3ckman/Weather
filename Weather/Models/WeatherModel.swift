@@ -11,6 +11,7 @@
 //   let weatherModel = try? newJSONDecoder().decode(WeatherModel.self, from: jsonData)
 
 import Foundation
+import SwiftUI
 
 // MARK: - WeatherModel
 struct WeatherModel: Codable {
@@ -72,7 +73,8 @@ struct Sys: Codable {
 // MARK: - Weather
 struct Weather: Codable {
     let id: Int
-    let main, weatherDescription, icon: String
+    let main, weatherDescription: String
+    let icon: String
 
     enum CodingKeys: String, CodingKey {
         case id, main
@@ -87,3 +89,33 @@ struct Wind: Codable {
     let deg: Int
 }
 
+enum WeatherCode: String, Codable {
+    case clear = "01d"
+    case partlyCloudy = "02d"
+    case cloudy = "03d"
+    case veryCloudy = "04d"
+    case rain = "09d"
+    case moreRain = "10d"
+    case thunderstorms = "11d"
+    case snow = "13d"
+    case fog = "50d"
+
+    var image: Image {
+        switch self {
+        case .clear:
+            return Image(systemName: "sun.max.fill")
+        case .partlyCloudy:
+            return Image(systemName: "cloud.sun.fill")
+        case .cloudy, .veryCloudy:
+            return Image(systemName: "cloud.fill")
+        case .rain, .moreRain:
+            return Image(systemName: "cloud.rain.fill")
+        case .thunderstorms:
+            return Image(systemName: "cloud.bolt.fill")
+        case .fog:
+            return Image(systemName: "cloud.fog.fill")
+        case .snow:
+            return Image(systemName: "snow")
+        }
+    }
+}
