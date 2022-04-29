@@ -14,6 +14,8 @@
 		C4A21295281B55480057D305 /* WeatherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A21294281B55480057D305 /* WeatherTests.swift */; };
 		C4A2129F281B55480057D305 /* WeatherUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A2129E281B55480057D305 /* WeatherUITests.swift */; };
 		C4A212A1281B55480057D305 /* WeatherUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A212A0281B55480057D305 /* WeatherUITestsLaunchTests.swift */; };
+		C4D48CFD281B6684006F7F51 /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D48CFC281B6684006F7F51 /* WeatherModel.swift */; };
+		C4D48CFF281B66C2006F7F51 /* WeatherAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D48CFE281B66C2006F7F51 /* WeatherAPIClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,9 @@
 		C4A2129A281B55480057D305 /* WeatherUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeatherUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4A2129E281B55480057D305 /* WeatherUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherUITests.swift; sourceTree = "<group>"; };
 		C4A212A0281B55480057D305 /* WeatherUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		C4D48CFC281B6684006F7F51 /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
+		C4D48CFE281B66C2006F7F51 /* WeatherAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPIClient.swift; sourceTree = "<group>"; };
+		C4D48D00281B695B006F7F51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,10 +99,13 @@
 		C4A21282281B55450057D305 /* Weather */ = {
 			isa = PBXGroup;
 			children = (
+				C4D48D00281B695B006F7F51 /* Info.plist */,
 				C4A21283281B55450057D305 /* WeatherApp.swift */,
 				C4A21285281B55450057D305 /* ContentView.swift */,
 				C4A21287281B55480057D305 /* Assets.xcassets */,
 				C4A21289281B55480057D305 /* Preview Content */,
+				C4D48CFC281B6684006F7F51 /* WeatherModel.swift */,
+				C4D48CFE281B66C2006F7F51 /* WeatherAPIClient.swift */,
 			);
 			path = Weather;
 			sourceTree = "<group>";
@@ -258,6 +266,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C4A21286281B55450057D305 /* ContentView.swift in Sources */,
+				C4D48CFD281B6684006F7F51 /* WeatherModel.swift in Sources */,
+				C4D48CFF281B66C2006F7F51 /* WeatherAPIClient.swift in Sources */,
 				C4A21284281B55450057D305 /* WeatherApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -420,6 +430,8 @@
 				DEVELOPMENT_TEAM = 763XSV568U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Weather/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Location required to access nearby weather";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -449,6 +461,8 @@
 				DEVELOPMENT_TEAM = 763XSV568U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Weather/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Location required to access nearby weather";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
