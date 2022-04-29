@@ -14,7 +14,7 @@ import Foundation
 import SwiftUI
 
 // MARK: - WeatherModel
-struct WeatherModel: Codable {
+struct WeatherModel: Codable, Identifiable {
     let coord: Coord
     let weather: [Weather]
     let base: String
@@ -118,4 +118,11 @@ enum WeatherCode: String, Codable {
             return Image(systemName: "snow")
         }
     }
+}
+extension WeatherModel {
+    static let sampleData: [WeatherModel] =
+    [
+        WeatherModel(coord: Coord(lon: 84.111, lat: -53.111), weather: [Weather(id: 200, main: "Sunny", weatherDescription: "It's very sunny", icon: "01d")], base: "stations", main: Main(temp: 84.543, feelsLike: 86.56, tempMin: 75.123, tempMax: 89.432, pressure: 1018, humidity: 67), visibility: 10000, wind: Wind(speed: 2.57, deg: 60), rain: Rain(the1H: 0.1), clouds: Clouds(all: 100), dt: 1651191306, sys: Sys(type: 2, id: 2008655, country: "US", sunrise: 1651142465, sunset: 1651192010), timezone: -14400, id: 4511939, name: "Dayton", cod: 200),
+        WeatherModel(coord: Coord(lon: 85.111, lat: -53.111), weather: [Weather(id: 200, main: "Sunny", weatherDescription: "It's very sunny", icon: "01d")], base: "stations", main: Main(temp: 84.543, feelsLike: 86.56, tempMin: 75.123, tempMax: 89.432, pressure: 1018, humidity: 67), visibility: 10000, wind: Wind(speed: 2.57, deg: 60), rain: Rain(the1H: 0.1), clouds: Clouds(all: 100), dt: 1651191306, sys: Sys(type: 2, id: 2008655, country: "US", sunrise: 1651142465, sunset: 1651192010), timezone: -14400, id: 4511939, name: "Cincinnati", cod: 200)
+    ]
 }

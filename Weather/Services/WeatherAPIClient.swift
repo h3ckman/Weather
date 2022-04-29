@@ -12,7 +12,6 @@ final class WeatherAPIClient: NSObject, ObservableObject, CLLocationManagerDeleg
     @Published var currentWeather: WeatherModel?
 
     private let locationManager = CLLocationManager()
-    private let dateFormatter = ISO8601DateFormatter()
     private let units = "imperial"
 
     override init() {
@@ -21,32 +20,23 @@ final class WeatherAPIClient: NSObject, ObservableObject, CLLocationManagerDeleg
         requestLocation()
     }
 
-    func fetchWeather() async {
+    func fetchWeather(completion: @escaping (WeatherModel) -> ()) {
         guard let location = locationManager.location else {
             requestLocation()
             return
         }
 
-//        guard let url = URL(string: "https://api.tomorrow.io/v4/timelines?location=\(location.coordinate.latitude),\(location.coordinate.longitude)&fields=temperature&fields=weatherCode&units=metric&timesteps=1h&startTime=\(dateFormatter.string(from: Date()))&endTime=\(dateFormatter.string(from: Date().addingTimeInterval(60 * 60)))&apikey={$YOUR_KEY}") else {
-//            return
-//        }
-
         guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?units=\(units)&lat=\(location.coordinate.latitude)&lon=\(location.coordinate.longitude)&appid=cf002751564a4c78f5f7ed479f1b9ba3") else {
             return
         }
-
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            if let response = try? JSONDecoder().decode(WeatherModel.self, from: data) {
-//                currentWeather = weatherResponse.data.timelines.first?.intervals.first?.values
-                currentWeather = response;
-                DispatchQueue.main.async { [weak self] in
-                    self?.currentWeather = response
-                }
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            let weather = try! JSONDecoder().decode(WeatherModel.self, from: data!)
+            print(weather)
+            DispatchQueue.main.async {
+                completion(weather)
             }
-        } catch {
-            // handle the error
-        }
+        }.resume()
+
     }
 
     private func requestLocation() {
@@ -55,7 +45,7 @@ final class WeatherAPIClient: NSObject, ObservableObject, CLLocationManagerDeleg
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        Task { await fetchWeather() }
+        Task { fetchWeather { weather in self.currentWeather = weather } }
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
