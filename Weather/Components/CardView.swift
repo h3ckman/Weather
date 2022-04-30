@@ -13,13 +13,15 @@ struct CardView: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text(weather.data.name).font(.title)
+                Text(weather.data.name).font(.title2)
+                Spacer()
                 Text("\(weather.data.weather.first!.weatherDescription)").font(.caption).textCase(.uppercase)
             }
 
             Spacer()
-            VStack {
-                Label("\(Int(weather.data.main.temp))ºF", systemImage: "sun.max.fill").font(.title)
+            VStack(alignment: .trailing) {
+                Label("\(Int(weather.data.main.temp))ºF", systemImage: "sun.max.fill").font(.title2)
+                Spacer()
                 HStack(alignment: .center, spacing: 20) {
                     Text("H: \(Int(weather.data.main.tempMax))ºF").font(.caption)
                     Text("L: \(Int(weather.data.main.tempMin))ºF").font(.caption)
