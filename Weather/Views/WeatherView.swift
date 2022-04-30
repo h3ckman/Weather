@@ -6,46 +6,54 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 struct WeatherView: View {
-    @State var currentLocationWeather: WeatherModel?
-    @State var favoritesWeather: [WeatherModel]
+    @StateObject private var weatherManager = WeatherManager()
+    @State var currentLocationWeather: Weather?
+    @State var favoritesWeather: [Weather]
+    @State var favoriteLocations = (UserDefaults.standard.stringArray(forKey: "Favorites") ?? [String]())
     @State private var searchText = ""
-    let names = ["Holly", "Josh", "Rhonda", "Ted"]
 
     var body: some View {
         NavigationView {
             List {
-                if let currentLocationWeather = currentLocationWeather {
-                    Section(header: CurrentLocationHeader()) {
-                        CardView(weather: currentLocationWeather)
+                if searchText == "" {
+                    if let currentLocationWeather = currentLocationWeather {
+                        Section(header: CurrentLocationHeader()) {
+                            NavigationLink(destination: DetailedWeatherView(weather: currentLocationWeather)) {
+                                CardView(weather: currentLocationWeather)
+                            }
+                        }
                     }
-                }
-                if !favoritesWeather.isEmpty {
-                    Section(header: FavoritesHeader()) {
-                        ForEach(favoritesWeather, id: ) { weather in
-                            CardView(weather: weather)
+                    if !favoritesWeather.isEmpty {
+                        Section(header: FavoritesHeader()) {
+                            ForEach(favoritesWeather) { weather in
+                                NavigationLink(destination: DetailedWeatherView(weather: weather)) {
+                                    CardView(weather: weather)
+                                }
+                            }
                         }
                     }
                 }
-
-            }.listStyle(GroupedListStyle())
-                .onAppear() {
-                WeatherAPIClient().fetchWeather { weather in
-                    self.currentLocationWeather = weather
+                else {
+                    // Show location suggestions based on search text
                 }
             }
-                .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: Text("Search City or Zip Code")) {
+//                Text("City, State")
+//                Text("Zip Code")
+            }
+                .listStyle(.insetGrouped)
                 .navigationTitle("Weather")
         }
-    }
-
-    var searchResults: [String] {
-        if searchText.isEmpty {
-            return names
-        } else {
-            return names.filter { $0.contains(searchText) }
+            .onAppear() {
+            WeatherManager().fetchLocalWeather { weather in self.currentLocationWeather = Weather(data: weather) }
+            for favorite in favoriteLocations {
+                WeatherManager().fetchWeather(cityZip: favorite, completion: { weather in self.favoritesWeather.append(Weather(data: weather)) })
+            }
         }
+
     }
 }
 
@@ -69,7 +77,7 @@ struct FavoritesHeader: View {
 
 struct WeatherView_Previews: PreviewProvider {
     static var previews: some View {
-        WeatherView(currentLocationWeather: WeatherModel.sampleData[0], favoritesWeather: WeatherModel.sampleData)
+        WeatherView(currentLocationWeather: Weather.sampleData[0], favoritesWeather: Weather.sampleData)
     }
 }
 

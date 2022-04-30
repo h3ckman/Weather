@@ -1,0 +1,66 @@
+//
+//  WeatherAPIClient.swift
+//  Weather
+//
+//  Created by Alexander Heck on 4/28/22.
+//
+
+import Foundation
+import CoreLocation
+
+final class WeatherManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+    @Published var currentWeather: Weather?
+    @Published var currentLocation: CLLocation?
+
+    private let locationManager = CLLocationManager()
+    private let units = "imperial"
+
+    override init() {
+        super.init()
+        locationManager.delegate = self
+        requestLocation()
+    }
+
+    func fetchLocalWeather(completion: @escaping (WeatherModel) -> ()) {
+        guard let location = locationManager.location else {
+            requestLocation()
+            return
+        }
+
+        guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?units=\(units)&lat=\(location.coordinate.latitude)&lon=\(location.coordinate.longitude)&appid=cf002751564a4c78f5f7ed479f1b9ba3") else { return }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            let weather = try! JSONDecoder().decode(WeatherModel.self, from: data!)
+            DispatchQueue.main.async {
+                completion(weather)
+            }
+        }.resume()
+
+    }
+
+    func fetchWeather(cityZip: String, completion: @escaping (WeatherModel) -> ()) {
+        guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?units=\(units)&q=\(cityZip)&appid=cf002751564a4c78f5f7ed479f1b9ba3") else { return }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            let weather = try! JSONDecoder().decode(WeatherModel.self, from: data!)
+            DispatchQueue.main.async {
+                completion(weather)
+            }
+        }.resume()
+
+    }
+    
+    func requestLocation() {
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.requestLocation()
+    }
+
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        Task { fetchLocalWeather( completion: { weather in self.currentWeather = Weather(data: weather) } ) }
+        currentLocation = locations.first
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        // handle the error
+    }
+}

@@ -13,10 +13,15 @@
 import Foundation
 import SwiftUI
 
-// MARK: - WeatherModel
+struct Weather: Identifiable {
+    let id = UUID()
+    let data: WeatherModel
+}
+
+// MARK: - OpenWeatherMap Model
 struct WeatherModel: Codable, Identifiable {
     let coord: Coord
-    let weather: [Weather]
+    let weather: [WeatherDescription]
     let base: String
     let main: Main
     let visibility: Int
@@ -30,17 +35,14 @@ struct WeatherModel: Codable, Identifiable {
     let cod: Int
 }
 
-// MARK: - Clouds
 struct Clouds: Codable {
     let all: Int
 }
 
-// MARK: - Coord
 struct Coord: Codable {
     let lon, lat: Double
 }
 
-// MARK: - Main
 struct Main: Codable {
     let temp, feelsLike, tempMin, tempMax: Double
     let pressure, humidity: Int
@@ -54,7 +56,6 @@ struct Main: Codable {
     }
 }
 
-// MARK: - Rain
 struct Rain: Codable {
     let the1H: Double
 
@@ -63,15 +64,13 @@ struct Rain: Codable {
     }
 }
 
-// MARK: - Sys
 struct Sys: Codable {
     let type, id: Int
     let country: String
     let sunrise, sunset: Int
 }
 
-// MARK: - Weather
-struct Weather: Codable {
+struct WeatherDescription: Codable {
     let id: Int
     let main, weatherDescription: String
     let icon: String
@@ -83,7 +82,6 @@ struct Weather: Codable {
     }
 }
 
-// MARK: - Wind
 struct Wind: Codable {
     let speed: Double
     let deg: Int
@@ -119,10 +117,10 @@ enum WeatherCode: String, Codable {
         }
     }
 }
-extension WeatherModel {
-    static let sampleData: [WeatherModel] =
+extension Weather {
+    static let sampleData: [Weather] =
     [
-        WeatherModel(coord: Coord(lon: 84.111, lat: -53.111), weather: [Weather(id: 200, main: "Sunny", weatherDescription: "It's very sunny", icon: "01d")], base: "stations", main: Main(temp: 84.543, feelsLike: 86.56, tempMin: 75.123, tempMax: 89.432, pressure: 1018, humidity: 67), visibility: 10000, wind: Wind(speed: 2.57, deg: 60), rain: Rain(the1H: 0.1), clouds: Clouds(all: 100), dt: 1651191306, sys: Sys(type: 2, id: 2008655, country: "US", sunrise: 1651142465, sunset: 1651192010), timezone: -14400, id: 4511939, name: "Dayton", cod: 200),
-        WeatherModel(coord: Coord(lon: 85.111, lat: -53.111), weather: [Weather(id: 200, main: "Sunny", weatherDescription: "It's very sunny", icon: "01d")], base: "stations", main: Main(temp: 84.543, feelsLike: 86.56, tempMin: 75.123, tempMax: 89.432, pressure: 1018, humidity: 67), visibility: 10000, wind: Wind(speed: 2.57, deg: 60), rain: Rain(the1H: 0.1), clouds: Clouds(all: 100), dt: 1651191306, sys: Sys(type: 2, id: 2008655, country: "US", sunrise: 1651142465, sunset: 1651192010), timezone: -14400, id: 4511939, name: "Cincinnati", cod: 200)
+        Weather(data: WeatherModel(coord: Coord(lon: 84.111, lat: -53.111), weather: [WeatherDescription(id: 200, main: "Sunny", weatherDescription: "It's very sunny", icon: "01d")], base: "stations", main: Main(temp: 84.543, feelsLike: 86.56, tempMin: 75.123, tempMax: 89.432, pressure: 1018, humidity: 67), visibility: 10000, wind: Wind(speed: 2.57, deg: 60), rain: Rain(the1H: 0.1), clouds: Clouds(all: 100), dt: 1651191306, sys: Sys(type: 2, id: 2008655, country: "US", sunrise: 1651142465, sunset: 1651192010), timezone: -14400, id: 4511939, name: "Dayton", cod: 200)),
+        Weather(data: WeatherModel(coord: Coord(lon: 85.111, lat: -53.111), weather: [WeatherDescription(id: 200, main: "Sunny", weatherDescription: "It's very sunny", icon: "01d")], base: "stations", main: Main(temp: 84.543, feelsLike: 86.56, tempMin: 75.123, tempMax: 89.432, pressure: 1018, humidity: 67), visibility: 10000, wind: Wind(speed: 2.57, deg: 60), rain: Rain(the1H: 0.1), clouds: Clouds(all: 100), dt: 1651191306, sys: Sys(type: 2, id: 2008655, country: "US", sunrise: 1651142465, sunset: 1651192010), timezone: -14400, id: 4511939, name: "Cincinnati", cod: 200))
     ]
 }
