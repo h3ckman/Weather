@@ -11,7 +11,7 @@ import SwiftUI
 struct CardView: View {
     let weather: Weather
     var body: some View {
-        HStack {
+        HStack(alignment: .center) {
             VStack(alignment: .leading) {
                 Text(weather.data.name).font(.title2)
                 Spacer()
@@ -20,9 +20,9 @@ struct CardView: View {
 
             Spacer()
             VStack(alignment: .trailing) {
-                Label("\(Int(weather.data.main.temp))ºF", systemImage: "sun.max.fill").font(.title2)
+                Label("\(Int(weather.data.main.temp))ºF", systemImage: "\((weather.data.weather.first!.image))").font(.title2)
                 Spacer()
-                HStack(alignment: .center, spacing: 20) {
+                HStack(alignment: .bottom, spacing: 20) {
                     Text("H: \(Int(weather.data.main.tempMax))ºF").font(.caption)
                     Text("L: \(Int(weather.data.main.tempMin))ºF").font(.caption)
                 }

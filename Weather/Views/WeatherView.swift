@@ -9,7 +9,8 @@ import SwiftUI
 import CoreLocation
 
 struct WeatherView: View {
-    @State var currentLocationWeather: Weather?
+//    @State var currentLocationWeather: Weather?
+    @StateObject var weatherManager = WeatherManager()
     @State var favoritesWeather: [Weather]
     
     @State var favoriteLocations = (UserDefaults.standard.stringArray(forKey: "Favorites") ?? [String]())
@@ -17,6 +18,11 @@ struct WeatherView: View {
     @State private var isShowingDetailView = false
     
     @State private var weatherSearch: Weather? = nil
+    
+//    init(currentLocationWeather: Weather?, favoritesWeather: [Weather]) {
+//        _favoritesWeather = State(initialValue: favoritesWeather)
+//        _currentLocationWeather = State(initialValue: weatherManager.currentWeather)
+//    }
     
     var body: some View {
         NavigationView {
@@ -29,8 +35,7 @@ struct WeatherView: View {
             
             List {
                 if searchText == "" {
-                    if let currentLocationWeather = currentLocationWeather {
-                        
+                    if let currentLocationWeather = weatherManager.currentWeather {
                         Section(header: CurrentLocationHeader()) {
                             NavigationLink(destination: DetailedWeatherView(weather: currentLocationWeather)) {
                                 CardView(weather: currentLocationWeather)
@@ -62,8 +67,9 @@ struct WeatherView: View {
                 .navigationTitle("Weather")
         }
             .onAppear() {
+                Task { await weatherManager.fetchLocalWeather() }
                 favoritesWeather = []
-            WeatherManager().fetchLocalWeather { weather in self.currentLocationWeather = Weather(data: weather) }
+                favoriteLocations = (UserDefaults.standard.stringArray(forKey: "Favorites") ?? [String]())
             for favorite in favoriteLocations {
                 WeatherManager().fetchWeather(cityZip: favorite, completion: { weather in self.favoritesWeather.append(Weather(data: weather)) })
             }
@@ -97,7 +103,7 @@ struct FavoritesHeader: View {
 
 struct WeatherView_Previews: PreviewProvider {
     static var previews: some View {
-        WeatherView(currentLocationWeather: Weather.sampleData[0], favoritesWeather: Weather.sampleData)
+        WeatherView(favoritesWeather: Weather.sampleData)
     }
 }
 

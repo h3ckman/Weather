@@ -80,6 +80,27 @@ struct WeatherDescription: Codable {
         case weatherDescription = "description"
         case icon
     }
+    
+    var image: String {
+        switch icon {
+        case "01d", "01n":
+            return "sun.max.fill"
+        case "02d", "02n":
+            return "cloud.sun.fill"
+        case "03d", "03n", "04d", "04n":
+            return "cloud.fill"
+        case "09d", "09n", "10d", "10n":
+            return "cloud.rain.fill"
+        case "11d", "11n":
+            return "cloud.bolt.fill"
+        case "50d", "50n":
+            return "cloud.fog.fill"
+        case "13d", "13n":
+            return "snow"
+        default:
+            return "sun.max.fill"
+        }
+    }
 }
 
 struct Wind: Codable {
@@ -87,40 +108,10 @@ struct Wind: Codable {
     let deg: Int
 }
 
-enum WeatherCode: String, Codable {
-    case clear = "01d"
-    case partlyCloudy = "02d"
-    case cloudy = "03d"
-    case veryCloudy = "04d"
-    case rain = "09d"
-    case moreRain = "10d"
-    case thunderstorms = "11d"
-    case snow = "13d"
-    case fog = "50d"
-
-    var image: Image {
-        switch self {
-        case .clear:
-            return Image(systemName: "sun.max.fill")
-        case .partlyCloudy:
-            return Image(systemName: "cloud.sun.fill")
-        case .cloudy, .veryCloudy:
-            return Image(systemName: "cloud.fill")
-        case .rain, .moreRain:
-            return Image(systemName: "cloud.rain.fill")
-        case .thunderstorms:
-            return Image(systemName: "cloud.bolt.fill")
-        case .fog:
-            return Image(systemName: "cloud.fog.fill")
-        case .snow:
-            return Image(systemName: "snow")
-        }
-    }
-}
 extension Weather {
     static let sampleData: [Weather] =
     [
         Weather(data: WeatherModel(coord: Coord(lon: 84.111, lat: -53.111), weather: [WeatherDescription(id: 200, main: "Sunny", weatherDescription: "It's very sunny", icon: "01d")], base: "stations", main: Main(temp: 84.543, feelsLike: 86.56, tempMin: 75.123, tempMax: 89.432, pressure: 1018, humidity: 67), visibility: 10000, wind: Wind(speed: 2.57, deg: 60), rain: Rain(the1H: 0.1), clouds: Clouds(all: 100), dt: 1651191306, sys: Sys(type: 2, id: 2008655, country: "US", sunrise: 1651142465, sunset: 1651192010), timezone: -14400, id: 4511939, name: "Dayton", cod: 200)),
-        Weather(data: WeatherModel(coord: Coord(lon: 85.111, lat: -53.111), weather: [WeatherDescription(id: 200, main: "Sunny", weatherDescription: "It's very sunny", icon: "01d")], base: "stations", main: Main(temp: 84.543, feelsLike: 86.56, tempMin: 75.123, tempMax: 89.432, pressure: 1018, humidity: 67), visibility: 10000, wind: Wind(speed: 2.57, deg: 60), rain: Rain(the1H: 0.1), clouds: Clouds(all: 100), dt: 1651191306, sys: Sys(type: 2, id: 2008655, country: "US", sunrise: 1651142465, sunset: 1651192010), timezone: -14400, id: 4511939, name: "Cincinnati", cod: 200))
+        Weather(data: WeatherModel(coord: Coord(lon: 85.111, lat: -53.111), weather: [WeatherDescription(id: 200, main: "Sunny", weatherDescription: "It's very sunny", icon: "02d")], base: "stations", main: Main(temp: 84.543, feelsLike: 86.56, tempMin: 75.123, tempMax: 89.432, pressure: 1018, humidity: 67), visibility: 10000, wind: Wind(speed: 2.57, deg: 60), rain: Rain(the1H: 0.1), clouds: Clouds(all: 100), dt: 1651191306, sys: Sys(type: 2, id: 2008655, country: "US", sunrise: 1651142465, sunset: 1651192010), timezone: -14400, id: 4511939, name: "Cincinnati", cod: 200))
     ]
 }

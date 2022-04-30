@@ -21,26 +21,28 @@ final class WeatherManager: NSObject, ObservableObject, CLLocationManagerDelegat
         requestLocation()
     }
 
-    func fetchLocalWeather(completion: @escaping (WeatherModel) -> ()) {
+    func fetchLocalWeather() async {
         guard let location = locationManager.location else {
             requestLocation()
             return
         }
 
         guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?units=\(units)&lat=\(location.coordinate.latitude)&lon=\(location.coordinate.longitude)&appid=cf002751564a4c78f5f7ed479f1b9ba3") else { return }
-        
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            let weather = try! JSONDecoder().decode(WeatherModel.self, from: data!)
-            DispatchQueue.main.async {
-                completion(weather)
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            if let weatherResponse = try? JSONDecoder().decode(WeatherModel.self, from: data) {
+                DispatchQueue.main.async { [weak self] in
+                    self?.currentWeather = Weather(data: weatherResponse)
+                }
             }
-        }.resume()
-
+        }
+        catch { }
     }
 
     func fetchWeather(cityZip: String, completion: @escaping (WeatherModel) -> ()) {
-        guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?units=\(units)&q=\(cityZip)&appid=cf002751564a4c78f5f7ed479f1b9ba3") else { return }
-        
+        let replaced = cityZip.replacingOccurrences(of: " ", with: "+")
+        guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?units=\(units)&q=\(replaced)&appid=cf002751564a4c78f5f7ed479f1b9ba3") else { return }
+
         URLSession.shared.dataTask(with: url) { data, response, error in
             let weather = try! JSONDecoder().decode(WeatherModel.self, from: data!)
             DispatchQueue.main.async {
@@ -49,15 +51,15 @@ final class WeatherManager: NSObject, ObservableObject, CLLocationManagerDelegat
         }.resume()
 
     }
-    
+
     func requestLocation() {
         locationManager.requestWhenInUseAuthorization()
         locationManager.requestLocation()
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        Task { fetchLocalWeather( completion: { weather in self.currentWeather = Weather(data: weather) } ) }
-        currentLocation = locations.first
+        Task { await fetchLocalWeather() }
+//        currentLocation = locations.first
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
