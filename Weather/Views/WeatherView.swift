@@ -10,6 +10,7 @@ import CoreLocation
 
 struct WeatherView: View {
     @StateObject var weatherManager = WeatherManager()
+    @State var currentLocationWeather: Weather?
     @State var favoritesWeather: [Weather]
 
     @State private var searchText = ""
@@ -29,35 +30,46 @@ struct WeatherView: View {
                 }
 
                 // List with sections for current location and favorites
-                List {
-                    if let currentLocationWeather = weatherManager.currentWeather {
-                        Section(header: CurrentLocationHeader()) {
-                            NavigationLink(destination: DetailedWeatherView(weather: currentLocationWeather)) {
-                                CardView(weather: currentLocationWeather)
+                if weatherManager.currentWeather != nil || !favoritesWeather.isEmpty {
+                    List {
+                        if let currentLocationWeather = weatherManager.currentWeather {
+                            Section(header: CurrentLocationHeader()) {
+                                NavigationLink(destination: DetailedWeatherView(weather: currentLocationWeather)) {
+                                    CardView(weather: currentLocationWeather)
+                                }
                             }
                         }
-                    }
-                    if !favoritesWeather.isEmpty {
-                        Section(header: FavoritesHeader()) {
-                            ForEach(favoritesWeather.sorted(by: {$0.data.name < $1.data.name})) { weather in
-                                NavigationLink(destination: DetailedWeatherView(weather: weather)) {
-                                    CardView(weather: weather)
+                        if !favoritesWeather.isEmpty {
+                            Section(header: FavoritesHeader()) {
+                                ForEach(favoritesWeather.sorted(by: { $0.data.name < $1.data.name })) { weather in
+                                    NavigationLink(destination: DetailedWeatherView(weather: weather)) {
+                                        CardView(weather: weather)
+                                    }
                                 }
                             }
                         }
                     }
+                        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always)
+                        , prompt: Text("Search City or Zip Code")
+                        , suggestions: {
+                            Text("City: Cincinnati").searchCompletion("cincinnati")
+                            Text("Zip Code: 45036").searchCompletion("45036")
+                        })
+                        .onSubmit(of: .search) {
+                        WeatherManager().fetchWeather(cityZip: searchText, completion: searchWeather)
+                    }
+                        .listStyle(.insetGrouped)
+                        .navigationTitle("Weather")
                 }
-                    .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always)
-                    , prompt: Text("Search City or Zip Code")
-                    , suggestions: {
-                        Text("City: Cincinnati").searchCompletion("cincinnati")
-                        Text("Zip Code: 45036").searchCompletion("45036")
+                else {
+                    Text("No weather info available yet.\nTap on refresh to fetch new data.\nMake sure you have enabled location permissions for the app.")
+                        .font(.body)
+                        .multilineTextAlignment(.center)
+                    Button("Refresh", action: {
+                        getWeatherData()
                     })
-                    .onSubmit(of: .search) {
-                    WeatherManager().fetchWeather(cityZip: searchText, completion: searchWeather)
                 }
-                    .listStyle(.insetGrouped)
-                    .navigationTitle("Weather")
+
             }
                 .onAppear() { getWeatherData() }
                 .refreshable {
@@ -69,10 +81,11 @@ struct WeatherView: View {
     /// Gets current local and favorited location weather from WeatherManager
     func getWeatherData() {
         Task { await weatherManager.fetchLocalWeather() }
-        favoritesWeather = []
-        let favoriteLocations = (UserDefaults.standard.stringArray(forKey: "Favorites") ?? [String]())
-        for favorite in favoriteLocations {
-            WeatherManager().fetchWeather(cityZip: favorite, completion: { weather in self.favoritesWeather.append(Weather(data: weather)) })
+        if let favoriteLocations = (UserDefaults.standard.stringArray(forKey: "Favorites")) {
+            favoritesWeather = []
+            for favorite in favoriteLocations {
+                WeatherManager().fetchWeather(cityZip: favorite, completion: { weather in self.favoritesWeather.append(Weather(data: weather)) })
+            }
         }
     }
 
