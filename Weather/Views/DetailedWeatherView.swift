@@ -33,18 +33,27 @@ struct DetailedWeatherView: View {
 
             Spacer()
         }
-            .toolbar(content: {
-            if !favoriteLocations.contains(weather.data.name) {
-                Button {
-                    favoriteLocations.append(weather.data.name)
-                    UserDefaults.standard.set(favoriteLocations, forKey: "Favorites")
-                    print(favoriteLocations)
+            // Toolbar to add or remove favorites from UserDefaults
+            .toolbar() {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                if (!favoriteLocations.contains(weather.data.name)) {
+                    Button(action: {
+                        favoriteLocations.append(weather.data.name)
+                        UserDefaults.standard.set(favoriteLocations, forKey: "Favorites")
+                    }, label: {
+                            Label("Favorite", systemImage: "star")
+                        })
                 }
-                label: {
-                    Label("Favorite", systemImage: "star")
+                else {
+                    Button(action: {
+                        favoriteLocations = favoriteLocations.filter { $0 != weather.data.name }
+                        UserDefaults.standard.set(favoriteLocations, forKey: "Favorites")
+                    }, label: {
+                            Label("Favorite", systemImage: "star.fill")
+                        })
                 }
             }
-        })
+        }
             .padding(.top, 100)
     }
 }
