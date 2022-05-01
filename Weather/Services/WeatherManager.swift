@@ -40,13 +40,9 @@ final class WeatherManager: NSObject, ObservableObject, CLLocationManagerDelegat
     }
 
     func fetchWeather(cityZip: String, completion: @escaping (WeatherModel) -> ()) {
-        var query = (Int(cityZip) != nil) ? "zip=\(Int(cityZip)!)" : "q=\(cityZip.replacingOccurrences(of: " ", with: "+"))"
-        if let zip = Int(cityZip) {
-            query = "zip=\(zip)"
-        }
-        else {
-            query = "q=\(cityZip.replacingOccurrences(of: " ", with: "+"))"
-        }
+        
+        // Change query param based on type of input
+        let query = (Int(cityZip) != nil) ? "zip=\(Int(cityZip)!)" : "q=\(cityZip.replacingOccurrences(of: " ", with: "+"))"
 
         guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?units=\(units)&\(query)&appid=cf002751564a4c78f5f7ed479f1b9ba3") else { return }
 

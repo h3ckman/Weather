@@ -11,7 +11,6 @@ import CoreLocation
 struct WeatherView: View {
     @StateObject var weatherManager = WeatherManager()
     @State var favoritesWeather: [Weather]
-    @State var favoriteLocations = (UserDefaults.standard.stringArray(forKey: "Favorites") ?? [String]())
 
     @State private var searchText = ""
     @State private var weatherSearch: Weather? = nil
@@ -31,26 +30,21 @@ struct WeatherView: View {
 
                 // List with sections for current location and favorites
                 List {
-                    if searchText == "" {
-                        if let currentLocationWeather = weatherManager.currentWeather {
-                            Section(header: CurrentLocationHeader()) {
-                                NavigationLink(destination: DetailedWeatherView(weather: currentLocationWeather)) {
-                                    CardView(weather: currentLocationWeather)
-                                }
-                            }
-                        }
-                        if !favoritesWeather.isEmpty {
-                            Section(header: FavoritesHeader()) {
-                                ForEach(favoritesWeather) { weather in
-                                    NavigationLink(destination: DetailedWeatherView(weather: weather)) {
-                                        CardView(weather: weather)
-                                    }
-                                }
+                    if let currentLocationWeather = weatherManager.currentWeather {
+                        Section(header: CurrentLocationHeader()) {
+                            NavigationLink(destination: DetailedWeatherView(weather: currentLocationWeather)) {
+                                CardView(weather: currentLocationWeather)
                             }
                         }
                     }
-                    else {
-                        // TODO: Show location suggestions based on search text
+                    if !favoritesWeather.isEmpty {
+                        Section(header: FavoritesHeader()) {
+                            ForEach(favoritesWeather.sorted(by: {$0.data.name < $1.data.name})) { weather in
+                                NavigationLink(destination: DetailedWeatherView(weather: weather)) {
+                                    CardView(weather: weather)
+                                }
+                            }
+                        }
                     }
                 }
                     .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always)
@@ -67,8 +61,8 @@ struct WeatherView: View {
             }
                 .onAppear() { getWeatherData() }
                 .refreshable {
-                    getWeatherData()
-                }
+                getWeatherData()
+            }
         }
     }
 
@@ -76,8 +70,7 @@ struct WeatherView: View {
     func getWeatherData() {
         Task { await weatherManager.fetchLocalWeather() }
         favoritesWeather = []
-        favoriteLocations = (UserDefaults.standard.stringArray(forKey: "Favorites") ?? [String]())
-        favoriteLocations = favoriteLocations.sorted(by: {$0 < $1})
+        let favoriteLocations = (UserDefaults.standard.stringArray(forKey: "Favorites") ?? [String]())
         for favorite in favoriteLocations {
             WeatherManager().fetchWeather(cityZip: favorite, completion: { weather in self.favoritesWeather.append(Weather(data: weather)) })
         }
