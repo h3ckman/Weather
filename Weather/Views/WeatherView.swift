@@ -19,62 +19,98 @@ struct WeatherView: View {
     @State private var isShowingDetailView = false
 
     var body: some View {
-        NavigationView {
-            VStack {
+        if(NetworkReachability().reachable) {
+            if let currentLocationWeather = weatherManager.currentWeather {
+                NavigationView {
+                    VStack {
 
-                // Hidden NavigationLink triggers when search is initiated
-                if let weatherSearch = weatherSearch {
-                    NavigationLink(destination: DetailedWeatherView(weather: weatherSearch), isActive: $isShowingDetailView) {
-                        EmptyView()
-                    }
-                }
+                        // Hidden NavigationLink triggers when search is initiated
+                        if let weatherSearch = weatherSearch {
+                            NavigationLink(destination: DetailedWeatherView(weather: weatherSearch), isActive: $isShowingDetailView) { EmptyView() }
+                        }
 
-                // List with sections for current location and favorites
-                if weatherManager.currentWeather != nil || !favoritesWeather.isEmpty {
-                    List {
-                        if let currentLocationWeather = weatherManager.currentWeather {
-                            Section(header: CurrentLocationHeader()) {
-                                NavigationLink(destination: DetailedWeatherView(weather: currentLocationWeather)) {
-                                    CardView(weather: currentLocationWeather)
-                                }
-                            }
+                        // List with sections for current location and favorites
+                        List {
+                            currentLocationView(weather: currentLocationWeather)
+                            favoritesView()
                         }
-                        if !favoritesWeather.isEmpty {
-                            Section(header: FavoritesHeader()) {
-                                ForEach(favoritesWeather.sorted(by: { $0.data.name < $1.data.name })) { weather in
-                                    NavigationLink(destination: DetailedWeatherView(weather: weather)) {
-                                        CardView(weather: weather)
-                                    }
-                                }
-                            }
+                            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always)
+                            , prompt: Text("Search City or Zip Code")
+                            , suggestions: {
+                                Text("City: Cincinnati").searchCompletion("cincinnati")
+                                Text("Zip Code: 45036").searchCompletion("45036")
+                            })
+                            .onSubmit(of: .search) {
+                            WeatherManager().fetchWeather(cityZip: searchText, completion: searchWeather)
                         }
+                            .listStyle(.insetGrouped)
+                            .navigationTitle("Weather")
                     }
-                        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always)
-                        , prompt: Text("Search City or Zip Code")
-                        , suggestions: {
-                            Text("City: Cincinnati").searchCompletion("cincinnati")
-                            Text("Zip Code: 45036").searchCompletion("45036")
-                        })
-                        .onSubmit(of: .search) {
-                        WeatherManager().fetchWeather(cityZip: searchText, completion: searchWeather)
-                    }
-                        .listStyle(.insetGrouped)
-                        .navigationTitle("Weather")
-                }
-                else {
-                    Text("No weather info available yet.\nTap on refresh to fetch new data.\nMake sure you have enabled location permissions for the app.")
-                        .font(.body)
-                        .multilineTextAlignment(.center)
-                    Button("Refresh", action: {
+                        .onAppear() { getWeatherData() }
+                        .refreshable {
                         getWeatherData()
-                    })
+                    }
                 }
+            }
+            else {
+                if(favoritesWeather.isEmpty) {
+                    emptyWeatherView()
+                }
+            }
+        }
+        else {
+            noNetworkView()
+        }
+    }
 
+    func currentLocationView(weather: Weather) -> some View {
+        Group {
+            Section(header: CurrentLocationHeader()) {
+                NavigationLink(destination: DetailedWeatherView(weather: weather)) {
+                    CardView(weather: weather)
+                }
             }
-                .onAppear() { getWeatherData() }
-                .refreshable {
+
+        }
+    }
+
+    func favoritesView() -> some View {
+        Group {
+            if !favoritesWeather.isEmpty {
+                Section(header: FavoritesHeader()) {
+                    ForEach(favoritesWeather.sorted(by: { $0.data.name < $1.data.name })) { weather in
+                        NavigationLink(destination: DetailedWeatherView(weather: weather)) {
+                            CardView(weather: weather)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    func emptyWeatherView() -> some View {
+        VStack(alignment: .center, spacing: 10) {
+            Image(systemName: "exclamationmark.triangle").font(.largeTitle)
+            Text("No weather info available yet").font(.title2)
+            Text("Have you enabled location services?")
+                .font(.body)
+                .multilineTextAlignment(.center)
+            Button("Refresh", action: {
                 getWeatherData()
-            }
+            }).buttonStyle(.borderedProminent)
+        }
+    }
+
+    func noNetworkView() -> some View {
+        VStack(alignment: .center, spacing: 10) {
+            Image(systemName: "bolt.horizontal").font(.largeTitle)
+            Text("No network connection!").font(.title2)
+            Text("This app requires a network connection. Please ensure WiFi or data is enabled and you are connected.")
+                .font(.body)
+                .multilineTextAlignment(.center)
+            Button("Settings", action: {
+                // Go to settings
+            }).buttonStyle(.borderedProminent)
         }
     }
 
@@ -94,6 +130,7 @@ struct WeatherView: View {
         weatherSearch = Weather(data: weather)
         isShowingDetailView = true
     }
+
 }
 
 struct CurrentLocationHeader: View {
@@ -116,10 +153,12 @@ struct FavoritesHeader: View {
     }
 }
 
-// TODO: fix preview
 struct WeatherView_Previews: PreviewProvider {
     static var previews: some View {
-        WeatherView(favoritesWeather: Weather.sampleData)
+        Group {
+            WeatherView(favoritesWeather: Weather.sampleData)
+            WeatherView(favoritesWeather: [])
+        }
     }
 }
 

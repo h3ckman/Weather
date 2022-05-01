@@ -18,6 +18,7 @@
 		C4D48CFF281B66C2006F7F51 /* WeatherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D48CFE281B66C2006F7F51 /* WeatherManager.swift */; };
 		C4D48D0C281C1D69006F7F51 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D48D0B281C1D69006F7F51 /* CardView.swift */; };
 		C4D48D10281C607A006F7F51 /* DetailedWeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D48D0F281C607A006F7F51 /* DetailedWeatherView.swift */; };
+		C4D48D1B281F443B006F7F51 /* NetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D48D1A281F443B006F7F51 /* NetworkReachability.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,7 @@
 		C4D48D01281B76F6006F7F51 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		C4D48D0B281C1D69006F7F51 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		C4D48D0F281C607A006F7F51 /* DetailedWeatherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedWeatherView.swift; sourceTree = "<group>"; };
+		C4D48D1A281F443B006F7F51 /* NetworkReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkReachability.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +165,7 @@
 			isa = PBXGroup;
 			children = (
 				C4D48CFE281B66C2006F7F51 /* WeatherManager.swift */,
+				C4D48D1A281F443B006F7F51 /* NetworkReachability.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -307,6 +310,7 @@
 			files = (
 				C4A21286281B55450057D305 /* WeatherView.swift in Sources */,
 				C4D48D10281C607A006F7F51 /* DetailedWeatherView.swift in Sources */,
+				C4D48D1B281F443B006F7F51 /* NetworkReachability.swift in Sources */,
 				C4D48CFD281B6684006F7F51 /* WeatherModel.swift in Sources */,
 				C4D48CFF281B66C2006F7F51 /* WeatherManager.swift in Sources */,
 				C4D48D0C281C1D69006F7F51 /* CardView.swift in Sources */,
