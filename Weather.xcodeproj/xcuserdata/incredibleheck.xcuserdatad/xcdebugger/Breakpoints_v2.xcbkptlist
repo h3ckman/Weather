@@ -55,16 +55,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "C1DF7E12-92E6-420E-9C81-C0D4DA17E7B2"
+            uuid = "F7271F08-BBA6-4ECE-8AF5-E536F126D09B"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Weather/Views/WeatherView.swift"
+            filePath = "Weather/Services/WeatherManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
-            landmarkName = "searchWeather(weather:)"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
+            landmarkName = "fetchWeather(cityZip:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
