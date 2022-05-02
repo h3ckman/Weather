@@ -41,7 +41,7 @@ struct DetailedWeatherView: View {
                         favoriteLocations.append(weather.data.name)
                         UserDefaults.standard.set(favoriteLocations, forKey: "Favorites")
                     }, label: {
-                            Label("Favorite", systemImage: "star")
+                            Label("Add Favorite", systemImage: "star")
                         })
                 }
                 else {
@@ -49,7 +49,7 @@ struct DetailedWeatherView: View {
                         favoriteLocations = favoriteLocations.filter { $0 != weather.data.name }
                         UserDefaults.standard.set(favoriteLocations, forKey: "Favorites")
                     }, label: {
-                            Label("Favorite", systemImage: "star.fill")
+                            Label("Remove Favorite", systemImage: "star.fill")
                         })
                 }
             }

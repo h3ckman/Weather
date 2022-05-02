@@ -19,6 +19,7 @@
 		C4D48D0C281C1D69006F7F51 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D48D0B281C1D69006F7F51 /* CardView.swift */; };
 		C4D48D10281C607A006F7F51 /* DetailedWeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D48D0F281C607A006F7F51 /* DetailedWeatherView.swift */; };
 		C4D48D1B281F443B006F7F51 /* NetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D48D1A281F443B006F7F51 /* NetworkReachability.swift */; };
+		C4D48D20282016EE006F7F51 /* TestUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D48D1C28200CCE006F7F51 /* TestUtilities.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,8 @@
 		C4D48D0B281C1D69006F7F51 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		C4D48D0F281C607A006F7F51 /* DetailedWeatherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedWeatherView.swift; sourceTree = "<group>"; };
 		C4D48D1A281F443B006F7F51 /* NetworkReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkReachability.swift; sourceTree = "<group>"; };
+		C4D48D1C28200CCE006F7F51 /* TestUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUtilities.swift; sourceTree = "<group>"; };
+		C4D48D1E28201034006F7F51 /* LosAngeles.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = LosAngeles.gpx; path = WeatherTests/LosAngeles.gpx; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +110,7 @@
 		C4A21282281B55450057D305 /* Weather */ = {
 			isa = PBXGroup;
 			children = (
+				C4D48D1E28201034006F7F51 /* LosAngeles.gpx */,
 				C4A21283281B55450057D305 /* WeatherApp.swift */,
 				C4D48D17281CA321006F7F51 /* Components */,
 				C4D48D08281B7BBE006F7F51 /* Views */,
@@ -131,6 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				C4A21294281B55480057D305 /* WeatherTests.swift */,
+				C4D48D1C28200CCE006F7F51 /* TestUtilities.swift */,
 			);
 			path = WeatherTests;
 			sourceTree = "<group>";
@@ -322,6 +327,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4D48D20282016EE006F7F51 /* TestUtilities.swift in Sources */,
 				C4A21295281B55480057D305 /* WeatherTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -536,6 +542,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 763XSV568U;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Used to get current location's weather";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alexheck.WeatherTests;
@@ -556,6 +563,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 763XSV568U;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Used to get current location's weather";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alexheck.WeatherTests;
@@ -575,6 +583,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 763XSV568U;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Used to get current location's weather";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alexheck.WeatherUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -593,6 +602,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 763XSV568U;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Used to get current location's weather";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alexheck.WeatherUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

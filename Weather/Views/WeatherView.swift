@@ -20,7 +20,7 @@ struct WeatherView: View {
 
     var body: some View {
         if(NetworkReachability().reachable) {
-            if let currentLocationWeather = weatherManager.currentWeather {
+            if let currentLocationWeather = weatherManager.currentWeather ?? currentLocationWeather {
                 NavigationView {
                     VStack {
 
@@ -63,9 +63,11 @@ struct WeatherView: View {
         }
     }
 
+    // MARK: Views
+    
     func currentLocationView(weather: Weather) -> some View {
         Group {
-            Section(header: CurrentLocationHeader()) {
+            Section(header: currentLocationHeader()) {
                 NavigationLink(destination: DetailedWeatherView(weather: weather)) {
                     CardView(weather: weather)
                 }
@@ -77,7 +79,7 @@ struct WeatherView: View {
     func favoritesView() -> some View {
         Group {
             if !favoritesWeather.isEmpty {
-                Section(header: FavoritesHeader()) {
+                Section(header: favoriteLocationsHeader()) {
                     ForEach(favoritesWeather.sorted(by: { $0.data.name < $1.data.name })) { weather in
                         NavigationLink(destination: DetailedWeatherView(weather: weather)) {
                             CardView(weather: weather)
@@ -114,6 +116,26 @@ struct WeatherView: View {
         }
     }
 
+    func currentLocationHeader() -> some View {
+        HStack {
+            Image(systemName: "location.fill")
+            Text("Current Location")
+        }
+            .listRowInsets(EdgeInsets(top: 15, leading: 10, bottom: 10, trailing: 10))
+    }
+
+
+    func favoriteLocationsHeader() -> some View {
+        HStack {
+            Image(systemName: "star.fill")
+            Text("Favorite Locations")
+        }
+            .listRowInsets(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
+    }
+
+
+    // MARK: Helper Functions
+    
     /// Gets current local and favorited location weather from WeatherManager
     func getWeatherData() {
         Task { await weatherManager.fetchLocalWeather() }
@@ -133,30 +155,12 @@ struct WeatherView: View {
 
 }
 
-struct CurrentLocationHeader: View {
-    var body: some View {
-        HStack {
-            Image(systemName: "location.fill")
-            Text("Current Location")
-        }
-            .listRowInsets(EdgeInsets(top: 15, leading: 10, bottom: 10, trailing: 10))
-    }
-}
-
-struct FavoritesHeader: View {
-    var body: some View {
-        HStack {
-            Image(systemName: "star.fill")
-            Text("Favorite Locations")
-        }
-            .listRowInsets(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
-    }
-}
+// MARK: Preview
 
 struct WeatherView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            WeatherView(favoritesWeather: Weather.sampleData)
+            WeatherView(currentLocationWeather: Weather.sampleData[0], favoritesWeather: Weather.sampleData)
             WeatherView(favoritesWeather: [])
         }
     }

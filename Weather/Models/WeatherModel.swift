@@ -13,7 +13,11 @@
 import Foundation
 import SwiftUI
 
-struct Weather: Identifiable {
+struct Weather: Identifiable, Equatable {
+    static func == (lhs: Weather, rhs: Weather) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     let id = UUID()
     let data: WeatherModel
 }

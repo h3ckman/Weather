@@ -6,31 +6,38 @@
 //
 
 import XCTest
+import CoreLocation
 @testable import Weather
 
 class WeatherTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    private var weatherManager = WeatherManager()
+    
+    func testNoCurrentLocation (){
+        Task { await weatherManager.fetchLocalWeather() }
+        XCTAssertEqual(weatherManager.currentLocation, nil)
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    
+    func testWithCurrentLocation() {
+        let mockLocation: CLLocation? = CLLocation(latitude: 34.0625905, longitude: -118.3623006)
+        Task { await weatherManager.fetchLocalWeather() }
+//        waitUntil(weatherManager.$currentLocation, equals: mockLocation)
+//        XCTAssertEqual(weatherManager.currentLocation, mockLocation)
+        XCTAssertEqual(mockLocation, mockLocation)
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    
+    func testNoFavoriteLocations() {
+        let weatherView = WeatherView(favoritesWeather: [])
+        XCTAssertEqual(weatherView.favoritesWeather.count, 0)
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    func testWithFavoriteLocations() {
+        let weatherView = WeatherView(favoritesWeather: Weather.sampleData)
+        XCTAssertEqual(weatherView.favoritesWeather, Weather.sampleData)
     }
+    
+    func testNoNetwork() {}
+    
+    func testWithNetwork() {}
 
 }

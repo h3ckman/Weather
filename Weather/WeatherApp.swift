@@ -11,7 +11,12 @@ import SwiftUI
 struct WeatherApp: App {
     var body: some Scene {
         WindowGroup {
-            WeatherView(favoritesWeather: [])
+            if ProcessInfo.processInfo.arguments.contains("UI_TESTS") {
+                WeatherView(currentLocationWeather: Weather.sampleData[0], favoritesWeather: Weather.sampleData)
+            }
+            else {
+                WeatherView(favoritesWeather: [])
+            }
         }
     }
 }
