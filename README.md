@@ -6,22 +6,29 @@
 
 # Weather
 
+<p align="center">
+<img src= "docs/screenshots/home.png" width="400" >
+<img src= "docs/screenshots/detailed.png" width="400" >
+</p>
+
 A simple iOS app that pulls the user's location and displays the current weather using the API provided by [OpenWeatherMap](https://openweathermap.org).
 
 ## Features
 
-- [x] Location aware weather
+- [x] Detailed weather information for any location, including current location
+- [x] Ability to search for locations by `City, ST` or `Zip Code`
+- [x] Ability to add locations as a "Favorite" 
 - [x] Adherent to iOS privacy standards
 - [x] Simple and easy to use
 
 ## Requirements
 
-- iOS 8.0+
+- iOS 14.0+
 - Xcode 13.3
 
 ## Installation
 
-This application does not require the installation of any external dependencies.   
+This application does *not* require the installation of any external dependencies such as CocoaPods.   
 
 ## Usage example
 
