@@ -6,12 +6,12 @@
 
 # Weather
 
-<p align="center">
-<img src= "docs/screenshots/home.png" width="400" >
-<img src= "docs/screenshots/detailed.png" width="400" >
-</p>
-
 A simple iOS app that pulls the user's location and displays the current weather using the API provided by [OpenWeatherMap](https://openweathermap.org).
+
+<p align="center">
+<img src= "docs/screenshots/home.png" width="200" >
+<img src= "docs/screenshots/detailed.png" width="200" >
+</p>
 
 ## Features
 
