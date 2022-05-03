@@ -22,6 +22,14 @@ struct Weather: Identifiable, Equatable {
     let data: WeatherModel
 }
 
+struct HourlyWeather: Identifiable {
+    var id = UUID()
+    let time: String
+    let temp: Double
+    let description: String
+    let icon: String
+}
+
 // MARK: - OpenWeatherMap Model
 struct WeatherModel: Codable, Identifiable {
     let coord: Coord
@@ -117,5 +125,21 @@ extension Weather {
     [
         Weather(data: WeatherModel(coord: Coord(lon: 84.111, lat: -53.111), weather: [WeatherDescription(id: 200, main: "Sunny", weatherDescription: "It's very sunny", icon: "01d")], base: "stations", main: Main(temp: 84.543, feelsLike: 86.56, tempMin: 75.123, tempMax: 89.432, pressure: 1018, humidity: 67), visibility: 10000, wind: Wind(speed: 2.57, deg: 60), rain: Rain(the1H: 0.1), clouds: Clouds(all: 100), dt: 1651191306, sys: Sys(type: 2, id: 2008655, country: "US", sunrise: 1651142465, sunset: 1651192010), timezone: -14400, id: 4511939, name: "Dayton", cod: 200)),
         Weather(data: WeatherModel(coord: Coord(lon: 85.111, lat: -53.111), weather: [WeatherDescription(id: 200, main: "Sunny", weatherDescription: "It's very sunny", icon: "02d")], base: "stations", main: Main(temp: 84.543, feelsLike: 86.56, tempMin: 75.123, tempMax: 89.432, pressure: 1018, humidity: 67), visibility: 10000, wind: Wind(speed: 2.57, deg: 60), rain: Rain(the1H: 0.1), clouds: Clouds(all: 100), dt: 1651191306, sys: Sys(type: 2, id: 2008655, country: "US", sunrise: 1651142465, sunset: 1651192010), timezone: -14400, id: 4511939, name: "Cincinnati", cod: 200))
+    ]
+}
+
+extension HourlyWeather {
+    static let sampleData: [HourlyWeather] =
+    [
+        HourlyWeather(time: "9:00AM", temp: 68.542, description: "Sunny", icon: "sun.max.fill"),
+        HourlyWeather(time: "10:00AM", temp: 70.542, description: "Sunny", icon: "sun.max.fill"),
+        HourlyWeather(time: "11:00AM", temp: 72.542, description: "Partly Cloudy", icon: "cloud.sun.fill"),
+        HourlyWeather(time: "12:00PM", temp: 73.542, description: "Partly Cloudy", icon: "cloud.sun.fill"),
+        HourlyWeather(time: "1:00PM", temp: 73.542, description: "Cloudy", icon: "cloud.fill"),
+        HourlyWeather(time: "2:00PM", temp: 74.542, description: "Sunny", icon: "sun.max.fill"),
+        HourlyWeather(time: "3:00PM", temp: 75.542, description: "Sunny", icon: "sun.max.fill"),
+        HourlyWeather(time: "4:00PM", temp: 75.542, description: "Sunny", icon: "sun.max.fill"),
+        HourlyWeather(time: "5:00PM", temp: 75.542, description: "Cloudy", icon: "cloud.fill"),
+        HourlyWeather(time: "6:00PM", temp: 74.542, description: "Cloudy", icon: "cloud.fill")
     ]
 }
