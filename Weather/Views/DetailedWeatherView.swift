@@ -12,6 +12,7 @@ struct DetailedWeatherView: View {
     @StateObject var weatherManager = WeatherManager()
     @State var favoriteLocations = (UserDefaults.standard.stringArray(forKey: "Favorites") ?? [])
     @State private var showingPopover = false
+    
     var body: some View {
         VStack(alignment: .center) {
             weatherDetailsView()
@@ -19,6 +20,8 @@ struct DetailedWeatherView: View {
             hourlyWeatherView()
         }.toolbar { toolbarView() }
     }
+    
+    // MARK: Views
 
     func weatherDetailsView() -> some View {
         VStack(spacing: 5) {
@@ -90,10 +93,14 @@ struct DetailedWeatherView: View {
         }
     }
 
+// MARK: Helper Functions
+    
 //    func getWeatherData() {
 //        WeatherManager().fetchWeather(cityZip: weather.data.name, completion: { weather in self.hourlyWeather = weather })
 //    }
 }
+
+// MARK: Preview
 
 struct DetailedWeatherView_Previews: PreviewProvider {
     static var previews: some View {
